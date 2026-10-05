@@ -86,7 +86,7 @@ export default function UltimateProductPage() {
   const [municipality, setMunicipality] = useState('');
 
   // Feature States
-  const [selectedSize, setSelectedSize] = useState(null);
+const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState('COD');
   const [showMapModal, setShowMapModal] = useState(false);
