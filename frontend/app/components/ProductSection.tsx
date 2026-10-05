@@ -4,6 +4,17 @@ import {
   MessageCircle, Gift, Moon, Sun, Star, CreditCard 
 } from 'lucide-react';
 
+// ProductSection が受け取る Props の型定義
+interface ProductSectionProps {
+  products?: any[];
+  addToCart?: (product: any) => void;
+  toggleWishlist?: (productId: number) => Promise<void>;
+  wishlist?: number[];
+  selectedColors?: Record<number, string>;
+  openSupport?: (productId: number) => Promise<void>;
+  [key: string]: any; // その他の Props も許容
+}
+
 // --------------------------------------------------------
 // 1. CHATBOT WIDGET COMPONENT
 // --------------------------------------------------------
@@ -73,9 +84,17 @@ const ScratchCardModal = ({ onClose }: { onClose: () => void }) => {
 };
 
 // --------------------------------------------------------
-// 3. MAIN PRODUCT SECTION COMPONENT (Combined)
+// 3. MAIN PRODUCT SECTION COMPONENT (Accepts Props)
 // --------------------------------------------------------
-export default function UltimateProductPage() {
+export default function ProductSection({
+  products,
+  addToCart,
+  toggleWishlist,
+  wishlist,
+  selectedColors,
+  openSupport,
+  ...props
+}: ProductSectionProps) {
   // Theme & Cart States
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [cartCount, setCartCount] = useState(0);
@@ -86,7 +105,7 @@ export default function UltimateProductPage() {
   const [municipality, setMunicipality] = useState('');
 
   // Feature States
-const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState('COD');
   const [showMapModal, setShowMapModal] = useState(false);
@@ -106,7 +125,7 @@ const [selectedSize, setSelectedSize] = useState<string | null>(null);
     return () => clearInterval(timer);
   }, []);
 
-const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
@@ -115,6 +134,9 @@ const formatTime = (seconds: number) => {
 
   const handleAddToCart = () => {
     setCartCount(prev => prev + 1);
+    if (addToCart && products && products.length > 0) {
+      addToCart(products[0]);
+    }
     alert('Product added to cart successfully!');
   };
 
@@ -221,7 +243,6 @@ const formatTime = (seconds: number) => {
                     <option value="">Select Province</option>
                     <option value="Bagmati">Bagmati Province</option>
                     <option value="Gandaki">Gandaki Province</option>
-                    {/* Add others */}
                   </select>
 
                   <div className="flex gap-3">
