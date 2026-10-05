@@ -106,7 +106,7 @@ export default function UltimateProductPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (seconds) => {
+const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
